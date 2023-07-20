@@ -29,6 +29,7 @@
     "react-responsive-modal": "^6.4.2",
     "react-router": "^6.13.0",
     "react-router-dom": "^6.13.0",
+    "react-scripts": "^5.0.1",
     "react-share": "^4.4.1",
     "reactjs-popup": "^2.0.5",
     "text-encoding": "^0.7.0"
