@@ -7,8 +7,8 @@
     "test": "cypress run  --headless --reporter mochawesome",
     "start": "webpack-dev-server --mode development --watch --open --hot --port=3000",
     "build": "webpack --mode production",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +22,8 @@
     "axios": "^1.4.0",
     "firebase": "^10.0.0",
     "gapi-script": "^1.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-google-login": "^5.2.2",
     "react-helmet": "^6.1.0",
     "react-modal": "^3.16.1",
