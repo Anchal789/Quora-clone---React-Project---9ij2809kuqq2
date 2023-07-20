@@ -6,7 +6,9 @@
   "scripts": {
     "test": "cypress run  --headless --reporter mochawesome",
     "start": "webpack-dev-server --mode development --watch --open --hot --port=3000",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
