@@ -29,7 +29,11 @@ const Login = () => {
     signInWithPopup(auth, googleProvider)
       .then(() => {
         navigate("/");
-        console.error("User Login");
+        myContext.setState({
+          email: auth.currentUser.email,
+          image: auth.currentUser.photoURL,
+          name: auth.currentUser.displayName,
+        });
       })
       .catch((error) => {
         setLoginError("Invalid Credentials");

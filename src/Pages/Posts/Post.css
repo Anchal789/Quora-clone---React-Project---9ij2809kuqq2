@@ -5,27 +5,39 @@
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 5px;
+  margin: auto;
   margin: 10px;
-  width: min-content;
+  width: 40vw;
 }
-
+@media screen and (max-width : 791px){
+  .post{
+    width: 100%;
+  }
+}
 .post_info {
   display: flex;
   align-items: center;
   gap: 5px;
+margin: 10px;
+
 }
 
-.post_info h5 {
+.post_info .nameAndDateDiv h5 {
   margin-left: 10px;
   cursor: pointer;
   font-size: 13px;
-
   &:hover {
     text-decoration: underline;
   }
 }
 
-.post_info small {
+.nameAndDateDiv {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 5px;
+}
+
+.post_info .nameAndDateDiv small {
   margin-left: 10px;
 }
 
@@ -33,19 +45,21 @@
 .post_body {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .post_question {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 
 .post_question p {
   cursor: pointer;
+  letter-spacing: 0.05rem;
+  word-spacing: 0.2rem;
 
   &:hover {
     text-decoration: underline;
@@ -65,16 +79,6 @@
   }
 }
 
-
-.post_answer {}
-
-/* img {
-  object-fit: contain;
-  width: 100%;
-  cursor: pointer;
-} */
-
-
 .post_footer {
   display: flex;
   justify-content: space-between;
@@ -89,7 +93,7 @@
 
 .post_footer span {
   color: gray;
-  font-size: 0.9rem;
+  font-size: 0.5rem;
 }
 
 .post_footerActions {
@@ -184,33 +188,23 @@
 }
 
 @media only screen and (max-width: 1250px) {
-  .ReactModalPortal {
-    .ReactModal__Overlay {
+
       .ReactModal__Content {
         margin: 50px 250px;
       }
-    }
-  }
+
 }
 
 @media only screen and (max-width: 1000px) {
-  .ReactModalPortal {
-    .ReactModal__Overlay {
-      .ReactModal__Content {
-        margin: 50px 100px;
-      }
-    }
+  .ReactModal__Content {
+    margin: 50px 100px;
   }
 }
 
 @media only screen and (max-width: 576px) {
-  .post {
-    .post_footer {
-      .post_footerActions {
-        gap: 0;
-      }
+    .ReactModal__Content {
+      margin: 0px;
     }
-  }
 }
 
 .modal__question {
@@ -251,7 +245,6 @@
 }
 
 .modal__button {
-  display: flex;
   align-items: center;
   margin-right: -20px;
   border-top: 1px solid lightgray;

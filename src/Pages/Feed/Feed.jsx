@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Feed.css";
 import QueryBox from "../QueryBox/Querybox";
 import Post from "../Posts/Posts";
-import questions from "../../assets/Api";
-import { set, get, child, ref, getDatabase, onValue } from "firebase/database";
+import {  get, child, ref, getDatabase } from "firebase/database";
 import { app } from "../../assets/firebase";
 import { MyContext } from "../../context/Mycontext";
-import axios from "axios";
+import UserQuestion from "../UserQuestions/UserQuestions";
 
-const Feed = (state) => {
+const Feed = () => {
   const mycontext = useContext(MyContext);
   const database = getDatabase(app);
   const [questionList, setQuestionList] = useState([]);
+  const [userQuestionList, setUserQuestionList] = useState([]);
 
   get(
     child(
@@ -21,37 +21,28 @@ const Feed = (state) => {
   ).then((snapShot) => {
     setQuestionList(snapShot.val());
   });
+  
 
-  // console.log(questionList);
-  // useEffect(() => {
-  //   onValue(
-  //     ref(database, `questionDatabase/questions/${mycontext.questionDatabase}`),
-  //     (snapshot) => {
-  //       setQuestionList(snapshot.val());
-  //       console.log(snapshot.val())
-  //     }
-  //   );
-  // }, []);
+  get(
+    child(
+      ref(database),
+      `userQuestions`
+    )
+  ).then((snapShot) => {
+    setUserQuestionList(snapShot.val());
+  });
 
-  // const putData = ()=>{
-  //   set(ref(database, "questionDatabase"),{
-  //     questions
-  //   })
-  //   console.log("successfull")
-  // }
-  // putData()
-
-  const date = new Date();
   return (
     <div className="feed">
       <QueryBox />
-
+      {
+        userQuestionList.map((userQuestion,index)=>(
+          userQuestion.userQuestion.question === "" ? null : (<UserQuestion key={index} userName={userQuestion.userQuestion.userName} question={userQuestion.userQuestion.question} userImage={userQuestion.userQuestion.userImage} postedDate={userQuestion.userQuestion.postedDate} answers={userQuestion.userQuestion.answers}/>)
+        ))
+      }
+      
       {questionList.map((question, index) => (
-        <Post key={index} id={question.id} question={question.question} answers={question.answers || question.answer}/>
-
-        // <li key={index}>
-        //   <p>{question.question}</p>
-        // </li>
+        <Post key={index} id={question.id} question={question.question} answers={[question.answers || question.answer]}/>
       ))}
     </div>
   );

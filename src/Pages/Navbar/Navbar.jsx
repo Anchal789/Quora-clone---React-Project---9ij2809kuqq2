@@ -17,6 +17,7 @@ import Logout from "../LogoutPage/Logout";
 import { useNavigate } from "react-router";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "../../assets/firebase";
+import { child, get, getDatabase, onValue, ref, set } from "firebase/database";
 
 const Navbar = () => {
   const mycontext = useContext(MyContext);
@@ -26,34 +27,104 @@ const Navbar = () => {
   const [inputUrl, setInputUrl] = useState("");
   const [user, setUser] = useState();
   const navigate = useNavigate();
+  const [userQuestion, setUserQuestion] = useState({
+    question: "",
+    userName: "",
+    userImage: "",
+    postedDate: "",
+    answers : []
+  });
+  const [userLength, setUserlength] = useState(0);
+
+  const date = new Date();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const database = getDatabase(app);
+
+  get(
+    child(
+      ref(database),
+      `userQuestions`
+    )
+  ).then((snapShot) => {
+    setUserlength(Object.keys(snapShot.val()).length);
+  });
 
   const handleAddQuestion = async (e) => {
     e.preventDefault();
-    setOpenModal(false);
+    setUserQuestion({
+      question: input,
+      userName: loginCred.name,
+      userImage: loginCred.image,
+      postedDate: `${date.getFullYear()} ${months[date.getMonth()]}`,
+      answers : [""]
+    });
+    setInput("");
   };
+
+  const modalOpenClose =()=>{
+    setOpenModal(!openModal);
+    const putData = () => {
+      set(ref(database, `userQuestions/${userLength+1}`), {
+        userQuestion,
+      });
+      console.log("successfull");
+    };
+    putData();
+  }
 
   const auth = getAuth(app);
 
   useEffect(() => {
+    // onValue(
+    //   ref(
+    //     getDatabase,
+    //     `questionDatabase/questions/${mycontext.questionDatabase}`
+    //   ),
+    //   (snapshot) => {
+    //     setQuestionList(snapshot.val());
+    //     console.log(snapshot.val());
+    //   }
+    // );
+
+    // const putData = ()=>{
+    //   set(ref(database, "userQuestions"),{
+    //     questions
+    //   })
+    //   console.log("successfull")
+    // }
+    // putData()
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        localStorage.setItem("loginCred",JSON.stringify({email : user.email, name : user.displayName, image : user.photoURL}))
-        // mycontext.unpdateContext("name", `${user.displayName}`);
-        // mycontext.unpdateContext("email", `${user.email}`);
-        // mycontext.unpdateContext("image", `${user.photoURL}`);
-        console.error("User Exist", user.email);
+        localStorage.setItem(
+          "loginCred",
+          JSON.stringify({
+            email: user.email,
+            name: user.displayName,
+            image: user.photoURL,
+          })
+        );
       } else {
         setUser(null);
-        console.error("no user found");
-        
       }
     });
     if (user === null) {
       navigate("/login");
       console.error("no user found");
       signOut(auth);
-      
     } else {
       null;
     }
@@ -103,11 +174,11 @@ const Navbar = () => {
           <LogoutIcon />
         </span>
         <LanguageOutlinedIcon />
-        <Button onClick={() => setOpenModal(true)}>Add Question</Button>
+        <Button onClick={modalOpenClose}>Add Question</Button>
         <Modal
           isOpen={openModal}
           ariaHideApp={false}
-          onRequestClose={() => setOpenModal(false)}
+          onRequestClose={modalOpenClose}
           shouldCloseOnOverlayClick={false}
         >
           <div className="modal_title">
@@ -144,7 +215,10 @@ const Navbar = () => {
               </div>
             </div>
             <div className="modal_buttons">
-              <button className="cancle" onClick={() => setOpenModal(false)}>
+              <button
+                className="cancle"
+                onClick={modalOpenClose}
+              >
                 Close
               </button>
               <button type="submit" className="add" onClick={handleAddQuestion}>

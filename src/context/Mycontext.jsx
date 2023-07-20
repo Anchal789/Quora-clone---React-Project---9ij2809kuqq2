@@ -22,7 +22,7 @@ const MycontextProvider = (props) => {
     setState({ ...state, [key]: value });
   };
   return (
-    <MyContext.Provider value={{ state, unpdateContext, login, loginStatus,questionDatabase,setQuestionDatabase }}>
+    <MyContext.Provider value={{ state,setState, unpdateContext, login, loginStatus,questionDatabase,setQuestionDatabase }}>
       {props.children}
     </MyContext.Provider>
   );

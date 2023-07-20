@@ -6,13 +6,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import Feed from "../Feed/Feed";
 import Widgets from "../Widgets/Widgets";
 import "./Home.css";
-import { useNavigate } from "react-router";
-import axios from "axios";
-
 
 const Home = () => {
-  const mycontext = useContext(MyContext);
-  const navigate = useNavigate();
   
   return (
     <div className="quora">
